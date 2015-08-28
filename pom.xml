@@ -60,6 +60,9 @@
 		<sonar.jacoco.itReportPath>target/reports/jacoco/jacoco-it.exec</sonar.jacoco.itReportPath>
 
 		<sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
+		
+		<sonar.phase>process-resources</sonar.phase>
+		
 	</properties>
 
 	<dependencies>
