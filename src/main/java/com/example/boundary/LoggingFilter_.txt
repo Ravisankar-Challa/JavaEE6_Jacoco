@@ -1,0 +1,88 @@
+package com.example.boundary;
+
+import java.io.BufferedInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.Map;
+
+import javax.ws.rs.container.ContainerRequestContext;
+import javax.ws.rs.container.ContainerRequestFilter;
+import javax.ws.rs.container.ContainerResponseContext;
+import javax.ws.rs.container.ContainerResponseFilter;
+import javax.ws.rs.core.MultivaluedMap;
+import javax.ws.rs.ext.Provider;
+
+@Provider
+@Logged // name-bound => resource filter
+public class LoggingFilter_ implements ContainerRequestFilter, ContainerResponseFilter {
+
+    @Override
+    public void filter(ContainerRequestContext requestContext) throws IOException {
+        log(requestContext);
+    }
+
+    @Override
+    public void filter(ContainerRequestContext requestContext, ContainerResponseContext responseContext) throws IOException {
+        log(responseContext);
+    }
+
+    private static void log(ContainerRequestContext context) throws IOException {
+    	System.out.println(context.hasEntity());
+    	System.out.println(context.getMethod());
+    	MultivaluedMap<String, String> headers = context.getHeaders();
+    	headers.forEach((key, value) -> System.out.println(key+"      "+value));
+    	
+    	if(context.getMethod().equalsIgnoreCase("POST")) {
+    		int maxEntitySize = 8092;
+    		if(context.hasEntity()) {
+    			InputStream stream = context.getEntityStream();
+    			  if (!stream.markSupported()) {
+    		            stream = new BufferedInputStream(stream);
+    		        }
+    		        stream.mark(maxEntitySize + 1);
+    		        final byte[] entity = new byte[maxEntitySize + 1];
+    		        final int entitySize = stream.read(entity);
+    		        StringBuilder b = new StringBuilder();
+    		        b.append(new String(entity, 0, Math.min(entitySize, maxEntitySize)));
+    		        if (entitySize > maxEntitySize) {
+    		            b.append("...more...");
+    		        }
+    		        b.append('\n');
+    		        System.out.println(b);
+    		        stream.reset();
+    		        context.setEntityStream(stream);
+    		}
+    	}
+    	else {
+    		
+    	}
+    }
+
+    private static void log(ContainerResponseContext context) {
+    	/*System.out.println(context.hasEntity());
+    		int maxEntitySize = 8092;
+    		if(context.hasEntity()) {
+    		OutputStream stream = context.getEntityStream();
+    			  if (!stream.markSupported()) {
+    		            stream = new BufferedOutStream(stream);
+    		        }
+    		        stream.mark(maxEntitySize + 1);
+    		        final byte[] entity = new byte[maxEntitySize + 1];
+    		        final int entitySize = stream.read(entity);
+    		        StringBuilder b = new StringBuilder();
+    		        b.append(new String(entity, 0, Math.min(entitySize, maxEntitySize)));
+    		        if (entitySize > maxEntitySize) {
+    		            b.append("...more...");
+    		        }
+    		        b.append('\n');
+    		        System.out.println(b);
+    		        stream.reset();
+    		        context.setEntityStream(stream);
+    		}
+    	}
+    	else {
+    		
+    	}*/
+    }
+}
