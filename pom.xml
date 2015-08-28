@@ -324,7 +324,7 @@
 		                            <!-- Sets the path to the file which contains the execution data. -->
 		                            <dataFile>${sonar.jacoco.reportPath}</dataFile>
 		                            <!-- Sets the output directory for the code coverage report. -->
-		                            <outputDirectory>${project.reporting.outputDirectory}/jacoco/it</outputDirectory>
+		                            <outputDirectory>${project.reporting.outputDirectory}/jacoco/ut</outputDirectory>
 		                        </configuration>
 		                    </execution>
 							<execution>
@@ -350,7 +350,7 @@
 		                            <!-- Sets the path to the file which contains the execution data. -->
 		                            <dataFile>${sonar.jacoco.itReportPath}</dataFile>
 		                            <!-- Sets the output directory for the code coverage report. -->
-		                            <outputDirectory>${project.reporting.outputDirectory}/jacoco/ut</outputDirectory>
+		                            <outputDirectory>${project.reporting.outputDirectory}/jacoco/it</outputDirectory>
 		                        </configuration>
 							</execution>
 						</executions>
