@@ -37,11 +37,16 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
 		<!-- JBoss dependency versions -->
-		<version.jboss.maven.plugin>7.4.Final</version.jboss.maven.plugin>
+		<version.jboss.maven.plugin>7.7.Final</version.jboss.maven.plugin>
 
 		<!-- other plugin versions -->
-		<version.surefire.plugin>2.10</version.surefire.plugin>
-		<version.war.plugin>2.1.1</version.war.plugin>
+		<version.surefire.plugin>2.18.1</version.surefire.plugin>
+		<version.war.plugin>2.6</version.war.plugin>
+		
+		<!-- dependencies versions -->
+		<version.arquillian>1.1.8.Final</version.arquillian>
+		<version.junit>4.12</version.junit>
+		<version.javaee>7.0</version.javaee>
 
 		<!-- maven-compiler-plugin -->
 		<maven.compiler.target>1.8</maven.compiler.target>
@@ -66,32 +71,24 @@
 	<dependencies>
 
 		<dependency>
-			<groupId>com.apple</groupId>
-			<artifactId>AppleJavaExtensions</artifactId>
-			<version>1.4</version>
-			<scope>test</scope>
-		</dependency>
-
-
-		<dependency>
 			<groupId>javax</groupId>
 			<artifactId>javaee-api</artifactId>
 			<scope>provided</scope>
-			<version>7.0</version>
+			<version>${version.javaee}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
 			<version>1.4.188</version>
+			<scope>test</scope>
 		</dependency>
-
 
 		<!-- Needed for running tests (you may also use TestNG) -->
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>4.12</version>
+			<version>${version.junit}</version>
 			<scope>test</scope>
 		</dependency>
 
@@ -119,23 +116,42 @@
 		<dependency>
 			<groupId>org.jboss.arquillian.junit</groupId>
 			<artifactId>arquillian-junit-container</artifactId>
+			<version>${version.arquillian}</version>
 			<scope>test</scope>
-			<version>1.1.0.Final</version>
 		</dependency>
-
+		<dependency>
+		        <groupId>org.jboss.arquillian.core</groupId>
+		        <artifactId>arquillian-core-api</artifactId>
+		        <version>${version.arquillian}</version>
+		        <scope>test</scope>
+		</dependency>
 		<dependency>
 			<groupId>org.jboss.arquillian.protocol</groupId>
 			<artifactId>arquillian-protocol-servlet</artifactId>
+			<version>${version.arquillian}</version>
 			<scope>test</scope>
-			<version>1.1.0.Final</version>
 		</dependency>
 
+		
+		<!-- When tested in mac mini arquillian tests are not working with out the below dependency -->
+		<dependency>
+			<groupId>com.apple</groupId>
+			<artifactId>AppleJavaExtensions</artifactId>
+			<version>1.4</version>
+			<scope>test</scope>
+		</dependency>
+		
 	</dependencies>
 
 	<build>
 		<!-- Maven will append the version to the finalName (which is the name 
 			given to the generated war, and hence the context root) -->
 		<finalName>${project.artifactId}</finalName>
+		<testResources>
+			<testResource>
+				<directory>src/it/resources</directory>
+			</testResource>
+		</testResources>
 		<plugins>
 			<plugin>
 				<artifactId>maven-war-plugin</artifactId>
@@ -178,6 +194,25 @@
 								<arquillian.launch>jbossas_remote</arquillian.launch>
 							</systemPropertyVariables>
 						</configuration>
+					</plugin>
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>build-helper-maven-plugin</artifactId>
+						<version>1.9.1</version>
+						<executions>
+							<execution>
+								<id>add-test-source</id>
+								<phase>process-sources</phase>
+								<goals>
+									<goal>add-test-source</goal>
+								</goals>
+								<configuration>
+									<sources>
+										<source>src/it/java</source>
+									</sources>
+								</configuration>
+							</execution>
+						</executions>
 					</plugin>
 				</plugins>
 			</build>
