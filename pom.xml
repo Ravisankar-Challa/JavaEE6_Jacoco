@@ -91,7 +91,14 @@
 			<version>${version.junit}</version>
 			<scope>test</scope>
 		</dependency>
-
+		
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-all</artifactId>
+			<version>1.10.19</version>
+			<scope>test</scope>
+		</dependency>
+		
 		<dependency>
 			<groupId>org.jacoco</groupId>
 			<artifactId>org.jacoco.core</artifactId>
@@ -147,14 +154,6 @@
 		<!-- Maven will append the version to the finalName (which is the name 
 			given to the generated war, and hence the context root) -->
 		<finalName>${project.artifactId}</finalName>
-		<testResources>
-			<testResource>
-				<directory>src/it/resources</directory>
-			</testResource>
-			<testResource>
-				<directory>src/test/resources</directory>
-			</testResource>
-		</testResources>
 		<plugins>
 			<plugin>
 				<artifactId>maven-war-plugin</artifactId>
@@ -187,6 +186,14 @@
 				<activeByDefault>true</activeByDefault>
 			</activation>
 			<build>
+				<testResources>
+					<testResource>
+						<directory>src/it/resources</directory>
+					</testResource>
+					<testResource>
+						<directory>src/test/resources</directory>
+					</testResource>
+				</testResources>
 				<plugins>
 					<plugin>
 						<artifactId>maven-surefire-plugin</artifactId>
