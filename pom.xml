@@ -29,10 +29,10 @@
 		</license>
 	</licenses>
 
-	<properties>
-		<!-- Explicitly declaring the source encoding eliminates the following 
+	 <properties>
+		<!-- Explicitly declaring the source encoding eliminates the following
 			message: -->
-		<!-- [WARNING] Using platform encoding (UTF-8 actually) to copy filtered 
+		<!-- [WARNING] Using platform encoding (UTF-8 actually) to copy filtered
 			resources, i.e. build is platform dependent! -->
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
@@ -42,11 +42,11 @@
 		<!-- other plugin versions -->
 		<version.surefire.plugin>2.18.1</version.surefire.plugin>
 		<version.war.plugin>2.6</version.war.plugin>
-		
+
 		<!-- dependencies versions -->
-		<version.arquillian>1.1.8.Final</version.arquillian>
+		<version.arquillian>1.1.9.Final</version.arquillian>
 		<version.junit>4.12</version.junit>
-		<version.javaee>7.0</version.javaee>
+		<version.javaee>6.0</version.javaee>
 
 		<!-- maven-compiler-plugin -->
 		<maven.compiler.target>1.8</maven.compiler.target>
@@ -65,10 +65,17 @@
 		<sonar.jacoco.itReportPath>target/reports/jacoco/jacoco-it.exec</sonar.jacoco.itReportPath>
 
 		<sonar.tests>src/it/java,src/test/java</sonar.tests>
-		
+
 	</properties>
 
 	<dependencies>
+
+		<dependency>
+			<groupId>javax.ws.rs</groupId>
+			<artifactId>javax.ws.rs-api</artifactId>
+			<version>2.0.1</version>
+			<scope>test</scope>
+		</dependency>
 
 		<dependency>
 			<groupId>javax</groupId>
@@ -84,6 +91,12 @@
 			<scope>test</scope>
 		</dependency>
 
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>3.1</version>
+		</dependency>
+
 		<!-- Needed for running tests (you may also use TestNG) -->
 		<dependency>
 			<groupId>junit</groupId>
@@ -91,22 +104,22 @@
 			<version>${version.junit}</version>
 			<scope>test</scope>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.mockito</groupId>
 			<artifactId>mockito-all</artifactId>
 			<version>1.10.19</version>
 			<scope>test</scope>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.jacoco</groupId>
 			<artifactId>org.jacoco.core</artifactId>
-			<version>0.7.5.201505241946</version>
+			<version>0.7.4.201502262128</version>
 			<scope>test</scope>
 		</dependency>
 
-		<!-- <dependency> <groupId>org.jacoco</groupId> <artifactId>jacoco-maven-plugin</artifactId> 
+		<!-- <dependency> <groupId>org.jacoco</groupId> <artifactId>jacoco-maven-plugin</artifactId>
 			<version>0.7.5.201505241946</version> <scope>test</scope> </dependency> -->
 
 		<dependency>
@@ -118,7 +131,7 @@
 
 
 		<!-- Optional, but highly recommended -->
-		<!-- Arquillian allows you to test enterprise code such as EJBs and Transactional(JTA) 
+		<!-- Arquillian allows you to test enterprise code such as EJBs and Transactional(JTA)
 			JPA from JUnit/TestNG -->
 		<dependency>
 			<groupId>org.jboss.arquillian.junit</groupId>
@@ -127,10 +140,10 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-		        <groupId>org.jboss.arquillian.core</groupId>
-		        <artifactId>arquillian-core-api</artifactId>
-		        <version>${version.arquillian}</version>
-		        <scope>test</scope>
+			<groupId>org.jboss.arquillian.core</groupId>
+			<artifactId>arquillian-core-api</artifactId>
+			<version>${version.arquillian}</version>
+			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.jboss.arquillian.protocol</groupId>
@@ -139,19 +152,26 @@
 			<scope>test</scope>
 		</dependency>
 
-		
-		<!-- When tested in mac mini arquillian tests are not working with out the below dependency -->
+
+		<!-- When tested in mac mini arquillian tests are not working with out
+			the below dependency -->
 		<dependency>
 			<groupId>com.apple</groupId>
 			<artifactId>AppleJavaExtensions</artifactId>
 			<version>1.4</version>
 			<scope>test</scope>
 		</dependency>
-		
+
+		<dependency>
+			<groupId>au.com.dius</groupId>
+			<artifactId>pact-jvm-provider_2.11</artifactId>
+			<version>3.0.2</version>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 
 	<build>
-		<!-- Maven will append the version to the finalName (which is the name 
+		<!-- Maven will append the version to the finalName (which is the name
 			given to the generated war, and hence the context root) -->
 		<finalName>${project.artifactId}</finalName>
 		<plugins>
@@ -159,7 +179,7 @@
 				<artifactId>maven-war-plugin</artifactId>
 				<version>${version.war.plugin}</version>
 				<configuration>
-					<!-- Java EE 6 and above doesn't require web.xml, Maven needs to catch 
+					<!-- Java EE 6 and above doesn't require web.xml, Maven needs to catch
 						up! -->
 					<failOnMissingWebXml>false</failOnMissingWebXml>
 				</configuration>
@@ -176,9 +196,9 @@
 
 	<profiles>
 		<profile>
-			<!-- The default profile skips all tests, though you can tune it to run 
+			<!-- The default profile skips all tests, though you can tune it to run
 				just unit tests based on a custom pattern -->
-			<!-- Seperate profiles are provided for running all tests, including Arquillian 
+			<!-- Seperate profiles are provided for running all tests, including Arquillian
 				tests that execute in the specified container -->
 			<id>default</id>
 			<!-- <activation> <property> <name>!default</name> </property> </activation> -->
@@ -237,9 +257,9 @@
 		</profile>
 
 		<profile>
-			<!-- An optional Arquillian testing profile that executes tests in your 
+			<!-- An optional Arquillian testing profile that executes tests in your
 				JBoss EAP instance -->
-			<!-- This profile will start a new JBoss EAP instance, and execute the 
+			<!-- This profile will start a new JBoss EAP instance, and execute the
 				test, shutting it down when done -->
 			<!-- Run with: mvn clean verify -Parq-jbossas-managed -->
 			<id>arq-jbossas-managed</id>
@@ -361,18 +381,18 @@
 								</goals>
 							</execution>
 							<execution>
-		                        <id>post-unit-test</id>
-		                        <phase>test</phase>
-		                        <goals>
-		                            <goal>report</goal>
-		                        </goals>
-		                        <configuration>
-		                            <!-- Sets the path to the file which contains the execution data. -->
-		                            <dataFile>${sonar.jacoco.reportPath}</dataFile>
-		                            <!-- Sets the output directory for the code coverage report. -->
-		                            <outputDirectory>${project.reporting.outputDirectory}/jacoco/ut</outputDirectory>
-		                        </configuration>
-		                    </execution>
+								<id>post-unit-test</id>
+								<phase>test</phase>
+								<goals>
+									<goal>report</goal>
+								</goals>
+								<configuration>
+									<!-- Sets the path to the file which contains the execution data. -->
+									<dataFile>${sonar.jacoco.reportPath}</dataFile>
+									<!-- Sets the output directory for the code coverage report. -->
+									<outputDirectory>${project.reporting.outputDirectory}/jacoco/ut</outputDirectory>
+								</configuration>
+							</execution>
 							<execution>
 								<configuration>
 									<destFile>${sonar.jacoco.itReportPath}</destFile>
@@ -393,11 +413,11 @@
 									<goal>report</goal>
 								</goals>
 								<configuration>
-		                            <!-- Sets the path to the file which contains the execution data. -->
-		                            <dataFile>${sonar.jacoco.itReportPath}</dataFile>
-		                            <!-- Sets the output directory for the code coverage report. -->
-		                            <outputDirectory>${project.reporting.outputDirectory}/jacoco/it</outputDirectory>
-		                        </configuration>
+									<!-- Sets the path to the file which contains the execution data. -->
+									<dataFile>${sonar.jacoco.itReportPath}</dataFile>
+									<!-- Sets the output directory for the code coverage report. -->
+									<outputDirectory>${project.reporting.outputDirectory}/jacoco/it</outputDirectory>
+								</configuration>
 							</execution>
 						</executions>
 					</plugin>
@@ -412,18 +432,5 @@
 				</dependency>
 			</dependencies>
 		</profile>
-
-		<!-- Activate this profile when needed -->
-		<!-- <profile> An optional Arquillian testing profile that executes tests 
-			in a remote JBoss EAP instance Run with: mvn clean test -Parq-jbossas-remote 
-			<id>arq-jbossas-remote</id> <build> <plugins> <plugin> <artifactId>maven-surefire-plugin</artifactId> 
-			<version>${version.surefire.plugin}</version> <configuration> <skip>false</skip> 
-			<systemPropertyVariables> <arquillian.launch>jbossas_remote</arquillian.launch> 
-			</systemPropertyVariables> <redirectTestOutputToFile>false</redirectTestOutputToFile> 
-			</configuration> </plugin> </plugins> </build> <dependencies> <dependency> 
-			<groupId>org.jboss.as</groupId> <artifactId>jboss-as-arquillian-container-remote</artifactId> 
-			<scope>test</scope> <version>7.2.0.Final</version> </dependency> </dependencies> 
-			</profile> -->
-
 	</profiles>
 </project>
