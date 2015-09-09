@@ -34,10 +34,8 @@ import org.junit.runners.MethodSorters;
 import com.example.entity.Member;
 
 @RunWith(Arquillian.class)
-@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class ArqIntegrationTestIT {
 	
-	private static String baseUrl;
 	
 	@Deployment(testable=true)
 	public static WebArchive createDeployment() {
@@ -47,10 +45,8 @@ public class ArqIntegrationTestIT {
 				.addAsResource("META-INF/test-persistence.xml", "META-INF/persistence.xml");
 	}
 	
-	@Before
-	public void setup() throws Exception {
-		baseUrl = "http://"+ManagementFactory.getPlatformMBeanServer().getAttribute(new ObjectName("jboss.as:interface=public"), "inet-address")+":"+ManagementFactory.getPlatformMBeanServer().getAttribute(new ObjectName("jboss.as:socket-binding-group=standard-sockets,socket-binding=http"), "port"); ;
-	}
+	@ArquillianResource
+	URL baseURL;
 	
 	@Test
 	public void testAddMember() {
@@ -60,12 +56,12 @@ public class ArqIntegrationTestIT {
 							  .name("Ravi")
 							  .dateOfBirth(null)
 							  .build();
-		Response response = client.target(baseUrl)
-								  .path("/test/api/member")
+		Response response = client.target(baseURL.toString())
+								  .path("api/member")
 								  .request()
 								  .post(Entity.entity(member, MediaType.APPLICATION_JSON));
 		assertEquals(201, response.getStatus());
-		//assertTrue(response.getLocation().toString().contains("/TestingEE/api/member/"));
+		//assertTrue(response.getLocation().toString().contains("/api/member/"));
 	}
 	
 	@Test
@@ -76,8 +72,8 @@ public class ArqIntegrationTestIT {
 							  .dateOfBirth(new Date())
 							  .build();
 		Response response = ClientBuilder.newClient()
-								  .target(baseUrl)
-								  .path("/test/api/member")
+								  .target(baseURL.toString())
+								  .path("api/member")
 								  .request()
 								  .post(Entity.entity(member, MediaType.APPLICATION_JSON));
 		assertEquals(201, response.getStatus());
@@ -90,13 +86,5 @@ public class ArqIntegrationTestIT {
 		assertEquals(12, member.getAge());
 		assertTrue(member.getId()>0);
 	}
-	
-/*	@Test
-	@RunAsClient
-    public void AshouldBeAbleToCallServlet(@ArquillianResource URL deployedApplicationUrl) throws Exception {
-        String body = new URL(deployedApplicationUrl, "/Test").toString();
-        System.out.println("LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL"+body);
-        baseURL = body;
-   }*/
 	
 }
