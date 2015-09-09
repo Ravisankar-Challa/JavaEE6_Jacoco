@@ -31,8 +31,8 @@ public class ApplicationResource {
 	@Inject
 	Logger LOG;
 	
-	@Inject
-	DataSourceConfiguration dataSourceConfiguration;
+	//@Inject
+	//DataSourceConfiguration dataSourceConfiguration;
 	
 	@Inject
 	MemberController memberController;

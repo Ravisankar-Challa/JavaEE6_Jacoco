@@ -264,6 +264,7 @@
 								<arquillian.launch>jbossas_managed</arquillian.launch>
 								<!-- <java.util.logging.manager>org.jboss.logmanager.LogManager</java.util.logging.manager> -->
 								<jboss.home>${project.basedir}/target/jboss-eap-6.4</jboss.home>
+								<jboss.socket.binding.port-offset>11</jboss.socket.binding.port-offset>
 								<!-- <module.path>${project.basedir}/target/jboss-eap-6.2/modules</module.path> -->
 							</systemPropertyVariables>
 							<reportsDirectory>${project.build.directory}/surefire-reports</reportsDirectory>
