@@ -34,7 +34,8 @@
         <configuration>
        		<!-- <property name="jbossHome">${project.basedir}/target/wildfly-8.1.0.Final</property> -->
        		<!-- <property name="allowConnectingToRunningServer">true</property> -->
-          <property name="managementPort">10010</property> <!-- This is important for Arquillian to know which JBoss to use.. -->
+       		<property name="javaVmArguments">${port-offset}</property>
+            <property name="managementPort">${management.port}</property> <!-- This is important for Arquillian to know which JBoss to use.. -->
         
         </configuration>
    </container>
