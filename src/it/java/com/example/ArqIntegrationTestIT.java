@@ -6,6 +6,7 @@ import java.lang.management.ManagementFactory;
 import java.net.URL;
 import java.util.Date;
 
+import javax.inject.Inject;
 import javax.management.AttributeNotFoundException;
 import javax.management.InstanceNotFoundException;
 import javax.management.MBeanException;
@@ -31,6 +32,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
 
+import com.example.boundary.ConfigurationService;
+import com.example.entity.Configuration;
 import com.example.entity.Member;
 
 @RunWith(Arquillian.class)
@@ -87,4 +90,25 @@ public class ArqIntegrationTestIT {
 		assertTrue(member.getId()>0);
 	}
 	
+	@Inject
+	ConfigurationService configurationService;
+	
+	@Test
+	public void createConfiguration() {
+		Configuration configuration = new Configuration();
+		configuration.setApplication("ervletContext");
+		configuration.setKey("url");
+		configuration.setValue("http://www.google.com");
+		configuration = configurationService.createConfig(configuration);
+		System.out.println(configuration.getId());
+	}
+	
+	@Test
+	public void testFindConfiguration() {
+		Configuration configuration = configurationService.findConfig("ervletContext").get(0);
+		System.out.println(configuration.getId());
+		System.out.println(configuration.getKey());
+		System.out.println(configuration.getValue());
+		System.out.println(configurationService.convertToKeyValuePair(configurationService.findConfig("ervletContext")));
+	}
 }

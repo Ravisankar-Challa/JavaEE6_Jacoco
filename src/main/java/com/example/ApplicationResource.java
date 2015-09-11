@@ -23,6 +23,7 @@ import javax.ws.rs.core.UriInfo;
 import com.example.boundary.Logged;
 import com.example.control.MemberController;
 import com.example.entity.Member;
+import com.example.util.ConfigurationValue;
 import com.example.util.DataSourceConfiguration;
 
 @Path("/")
@@ -36,6 +37,10 @@ public class ApplicationResource {
 	
 	@Inject
 	MemberController memberController;
+	
+	@Inject
+	@ConfigurationValue(value="url")
+	String url;
 	
 	@GET
 	@Path("/hello/{name}")
@@ -59,6 +64,13 @@ public class ApplicationResource {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Member readMember(@PathParam("id") long id) {
 		return memberController.readMember(id);
+	}
+	
+	@GET
+	@Path("/test")
+	@Produces(MediaType.TEXT_PLAIN)
+	public String read() {
+		return url;
 	}
 	
 }
